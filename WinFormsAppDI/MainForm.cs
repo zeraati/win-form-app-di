@@ -1,20 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-
-namespace WinFormsAppDI
+﻿namespace WinFormsAppDI
 {
     public partial class MainForm : Form
     {
-        public MainForm()
+        private readonly IHelloDI _helloDI;
+
+        public MainForm(IHelloDI helloDI)
         {
             InitializeComponent();
+            _helloDI = helloDI;
+
+            MessageBox.Show(_helloDI.SeyHello());
         }
     }
 }

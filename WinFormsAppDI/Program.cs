@@ -1,3 +1,6 @@
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+
 namespace WinFormsAppDI
 {
     internal static class Program
@@ -6,7 +9,22 @@ namespace WinFormsAppDI
         static void Main()
         {
             ApplicationConfiguration.Initialize();
-            Application.Run(new MainForm());
+
+            var host = CreateHostBuilder().Build();
+            ServiceProvider = host.Services;
+
+            Application.Run(ServiceProvider.GetRequiredService<MainForm>());
+        }
+        public static IServiceProvider ServiceProvider { get; private set; }
+        static IHostBuilder CreateHostBuilder()
+        {
+            var host= Host.CreateDefaultBuilder()
+                .ConfigureServices((context, services) => {
+                    services.AddTransient<IHelloDI, HelloDI>();
+                    services.AddTransient<MainForm>();
+                });
+
+            return host;
         }
     }
 }
